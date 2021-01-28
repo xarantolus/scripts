@@ -1,5 +1,7 @@
 #!/usr/bin/env bash 
 
+# Uses ffmpeg to create gifs from the first input file
+
 if [ "$#" != "2" ]; then
 	echo "Invalid number of arguments"
 	echo "Usage: ffgifpeg input output.gif"
