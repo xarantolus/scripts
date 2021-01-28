@@ -1,0 +1,20 @@
+#!/usr/bin/env bash 
+
+# Search tool:
+#
+# Based on ripgrep (https://github.com/BurntSushi/ripgrep)
+#
+# Features:
+#
+#    - VimGrep: Clickable links in vscode to the exact position
+#    - Exclude 'vendor' directory, useful for Go projects (also 'external')
+#    - Exclude '*.min.*' and '*.map', which is minified CSS & JS 
+#    - Exclude '*_files', which is an asset directory created when saving a website in a browser
+#    - Automatically ignores .gitignore files (does it without any options passed)
+#
+# Usage
+#
+#  rt printf      # Search for "printf", "Printf" etc.
+#  rt Printf      # Search only for "Printf", case insensitive
+#
+rg --smart-case --trim --color auto --vimgrep "$@" -g '!vendor/*' -g '!external/*' -g '!*_files' -g '!*.min.*' -g '!*.map'

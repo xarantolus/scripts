@@ -1,0 +1,11 @@
+#!/usr/bin/env bash 
+
+# Compiles go projects for the raspberry pi.
+# Raspberry Pis before the 4 might need different GOARM values (6 or 5)
+
+if [ -d "vendor" ] 
+then
+	GOOS=linux GOARCH=arm GOARM=7 go build -a -v -mod vendor 
+else
+	GOOS=linux GOARCH=arm GOARM=7 go build -a -v
+fi

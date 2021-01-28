@@ -1,0 +1,13 @@
+#!/usr/bin/env bash 
+
+if [ "$#" != "2" ]; then
+	echo "Invalid number of arguments"
+	echo "Usage: ffgifpeg input output.gif"
+	exit 1
+fi
+
+ffmpeg -i "$1" -vf palettegen palette.png
+
+ffmpeg -i "$1" -i palette.png -filter_complex "paletteuse" -qscale 0 "$2"
+
+rm -f palette.png
