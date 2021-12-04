@@ -1,0 +1,4 @@
+# Command:
+#     audio filename start length
+
+ffmpeg -i "$1" -af volume=2 -ss "$2" -t "$3" out.mp3

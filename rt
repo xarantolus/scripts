@@ -17,4 +17,4 @@
 #  rt printf      # Search for "printf", "Printf" etc.
 #  rt Printf      # Search only for "Printf", case insensitive
 #
-rg --smart-case --trim --color auto --vimgrep "$@" -g '!vendor/*' -g '!external/*' -g '!*_files' -g '!*.min.*' -g '!*.map'
+rg --smart-case --max-columns 200 --trim --color auto --vimgrep "$@" -g '!vendor/*' -g '!external/*' -g '!*_files' -g '!*.min.*' -g '!*.map'

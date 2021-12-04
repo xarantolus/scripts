@@ -10,6 +10,6 @@ fi
 
 ffmpeg -i "$1" -vf palettegen palette.png
 
-ffmpeg -i "$1" -i palette.png -filter_complex "paletteuse" -qscale 0 "$2"
+ffmpeg -i "$1" -i palette.png -filter_complex "paletteuse,fps=30" -qscale 0 "$2"
 
 rm -f palette.png
