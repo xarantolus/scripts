@@ -3,4 +3,4 @@
 # Counts lines in programming project files
 
 # last working commit: https://github.com/ryanfowler/lines/commit/49ba3e344952e2b6c6a2e38faf40340b713438c1
-lines -excludeDir vendor -exclude "\\.min\\.(?:css|js)$" .
+lines -excludeDir vendor -excludeDir build -exclude "\\.min\\.(?:css|js)$" .

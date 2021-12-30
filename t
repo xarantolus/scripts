@@ -5,7 +5,7 @@ set -e
 
 # Save the initial directory and return there on exit
 INITIAL_DIR="$(pwd)"
-trap "cd $INITIAL_DIR" EXIT
+trap "cd \"$INITIAL_DIR\"" EXIT
 
 # Get the current git directory, but don't output on errors
 GIT_REPO_DIR="$(git rev-parse --show-toplevel 2> /dev/null || true)"
@@ -23,7 +23,7 @@ fi
 # Go tests
 if rg -g '*_test.go' --files > /dev/null
 then
-  go test ./...
+  go test -cover ./...
 fi
 
 # Flutter tests
