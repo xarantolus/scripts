@@ -1,7 +1,6 @@
 #!/usr/bin/env bash 
 set -e
-# This script runs tests found in the current git repository
-
+# This script runs lints for files in the current repo
 
 # Save the initial directory and return there on exit
 INITIAL_DIR="$(pwd)"
@@ -16,16 +15,9 @@ if [ -n "$GIT_REPO_DIR" ]; then
 fi
 
 
-#
-# Now run tests if we find any
-#
 
-# Go tests
+
 if [ -f "./go.mod" ]; then
-  go test "$@" -cover ./...
-fi
-
-# Flutter tests
-if [ -f "./pubspec.yaml" ]; then 
-    flutter test
+    echo "Running Go linter" 
+    golangci-lint run
 fi
