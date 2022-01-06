@@ -3,7 +3,7 @@
 GO_FILES=$(rg --files -g "*.go")
 
 if [ "$GO_FILES" != "" ]; then
-    go fmt ./...
-
-    gci -w $GO_FILES
+    go fmt ./... || true
+    gofmt -s -w $GO_FILES || true
+    gci -w $GO_FILES || true
 fi

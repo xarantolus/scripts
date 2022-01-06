@@ -1,5 +1,5 @@
 #!/usr/bin/env bash 
-set -e
+set -euo pipefail 
 # This script runs tests found in the current git repository
 
 

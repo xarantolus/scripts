@@ -1,5 +1,5 @@
 #!/usr/bin/env bash 
-set -e
+set -euo pipefail 
 # This script runs lints for files in the current repo
 
 # Save the initial directory and return there on exit
@@ -19,5 +19,6 @@ fi
 
 if [ -f "./go.mod" ]; then
     echo "Running Go linter" 
-    golangci-lint run
+    golangci-lint run --enable-all --disable gofumpt,cyclop,maligned,interfacer,varnamelen,tagliatelle,errorlint,paralleltest,wrapcheck,exhaustivestruct,nestif,nlreturn,noctx,testpackage,godot,goerr113,gomnd,stylecheck,goimports,gochecknoglobals,unparam,lll,nakedret,goconst,golint,wsl,gochecknoinits,scopelint,funlen,prealloc,gocognit,ineffassign,gocyclo
+
 fi

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash 
+set -euo pipefail 
 
 # Script to start deploy scripts
 # I keep deploy scripts somewhere in my projects,
