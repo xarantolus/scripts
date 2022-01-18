@@ -1,0 +1,14 @@
+#!/usr/bin/env bash 
+set -euo pipefail 
+
+EXE_PATH="./$1"
+if [ ! -f "$EXE_PATH" ]; then
+    EXE_PATH=$(readlink -f "$1")
+fi
+
+
+valgrind --leak-check=full \
+         --show-leak-kinds=all \
+         --track-origins=yes \
+         --verbose \
+         "$EXE_PATH" "${@:2}"
