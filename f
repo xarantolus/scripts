@@ -6,7 +6,7 @@ if [[ "${1-}" == "--fail-on-change" ]]; then
     GIT_DIFF="$(git diff .)"    
 fi
 
-GO_FILES=$(rg --files -g "*.go" || true)
+GO_FILES=$(rg --files -g '!vendor/*' -g "*.go" || true)
 
 if [ "$GO_FILES" != "" ]; then
     echo "Formatting Go files..."
@@ -19,7 +19,7 @@ ML_FILES=$(rg --files -g "*.ml" || true)
 
 if [ "$ML_FILES" != "" ]; then
     echo "Formatting Ocaml files..."
-    ocamlformat -i $ML_FILES || true
+    ocamlformat --enable-outside-detected-project -i $ML_FILES || true
 fi
 
 

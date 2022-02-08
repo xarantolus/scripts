@@ -1,5 +1,7 @@
 #!/usr/bin/env bash 
 
+f || true
+
 USELESS_COMMIT_MESSAGES=(
     "Add hat wobble"
     "Remove herobrine"
@@ -26,4 +28,4 @@ random_message() {
 MSG="$@"
 ALTERNATIVE_MSG="$(random_message)"
 
-git commit -am"${MSG:-$ALTERNATIVE_MSG}" && git push
+git commit --allow-empty -am"${MSG:-$ALTERNATIVE_MSG}" && git push

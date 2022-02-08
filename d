@@ -20,9 +20,13 @@ elif [ -f "./Makefile" ]; then
 elif [ -f "./pubspec.yaml" ]; then 
 	flutter run --release "$@"
 elif [ -f "./dune-project" ]; then
-	dune utop
+	dune utop --profile release 
+elif [ -f "./dune" ]; then
+	dune utop --profile release 
 elif [ -f ./*.ml ]; then
-	utop -init ./*.ml
+	utop -I +threads -init ./*.ml
+elif [ -d "./src" ]; then
+	cd src && d
 else 
 	echo "No deploy script found"
 fi
