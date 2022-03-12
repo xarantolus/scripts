@@ -27,6 +27,12 @@ elif [ -f ./*.ml ]; then
 	utop -I +threads -init ./*.ml
 elif [ -d "./src" ]; then
 	cd src && d
+elif [ -d "generate" ]; then
+	cd generate && d
+elif [ -f "generate-all.sh" ]; then
+	./generate-all.sh
+elif [ -f "generate.sh" ]; then
+	./generate.sh
 else 
 	echo "No deploy script found"
 fi

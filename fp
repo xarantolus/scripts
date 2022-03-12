@@ -28,4 +28,4 @@ random_message() {
 MSG="$@"
 ALTERNATIVE_MSG="$(random_message)"
 
-git commit --allow-empty -am"${MSG:-$ALTERNATIVE_MSG}" && git push
+git commit -am"${MSG:-$ALTERNATIVE_MSG}" && git push
