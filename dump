@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -euo pipefail
+INPUT_TEXT="$@"
+
+INPUT_TEXT="-Mintel $INPUT_TEXT"
+
+if [[ ! "$INPUT_TEXT" =~ "-d" ]]; then
+    if [[ ! "$INPUT_TEXT" =~ "-D" ]]; then
+        # Disassemble only .text by default
+        INPUT_TEXT="-d $INPUT_TEXT"
+    fi
+fi
+
+
+# Escape for `less` prompt (it usually wouldn't display dots)
+INPUT_ESCAPED="${INPUT_TEXT//./\\.}"
+
+objdump $INPUT_TEXT | less --prompt="Output of objdump $INPUT_ESCAPED"
