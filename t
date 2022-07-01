@@ -1,5 +1,5 @@
-#!/usr/bin/env bash 
-set -euo pipefail 
+#!/usr/bin/env bash
+set -euo pipefail
 # This script runs tests found in the current git repository
 
 
@@ -26,6 +26,11 @@ if [ -f "./go.mod" ]; then
 fi
 
 # Flutter tests
-if [ -f "./pubspec.yaml" ]; then 
+if [ -f "./pubspec.yaml" ]; then
     flutter test
+fi
+
+# Rust tests
+if [ -f "./cargo.toml" ]; then
+    cargo test
 fi
