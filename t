@@ -2,35 +2,47 @@
 set -euo pipefail
 # This script runs tests found in the current git repository
 
+run_tests() {
+    TEST_DIR="$1"
+    cd "$TEST_DIR"
 
-# Save the initial directory and return there on exit
+    # If a Makefile has been provided, use it
+    if grep "test:" Makefile > /dev/null 2>&1; then
+        make test
+        return 0
+    fi
+
+    if grep "tests:" Makefile > /dev/null 2>&1; then
+        make tests
+        return 0
+    fi
+
+    # Go tests
+    if [ -f "./go.mod" ]; then
+        go test "$@" -cover ./...
+        return 0
+    fi
+
+    # Flutter tests
+    if [ -f "./pubspec.yaml" ]; then
+        flutter test "$@"
+        return 0
+    fi
+
+    # Rust tests
+    if [ -f "./Cargo.toml" ]; then
+        cargo test "$@"
+        return 0
+    fi
+    return 1
+}
+
+# Basically we want to run tests in the current directory, but if it doesn't work there we might as well look in the git repo root path
 INITIAL_DIR="$(pwd)"
-trap 'cd "$INITIAL_DIR"' EXIT
-
-# Get the current git directory, but don't output on errors
 GIT_REPO_DIR="$(git rev-parse --show-toplevel 2> /dev/null || true)"
 
-# Go to the top level of the git repo if defined
 if [ -n "$GIT_REPO_DIR" ]; then
-    cd "$GIT_REPO_DIR"
-fi
-
-
-#
-# Now run tests if we find any
-#
-
-# Go tests
-if [ -f "./go.mod" ]; then
-  go test "$@" -cover ./...
-fi
-
-# Flutter tests
-if [ -f "./pubspec.yaml" ]; then
-    flutter test
-fi
-
-# Rust tests
-if [ -f "./cargo.toml" ]; then
-    cargo test
+    run_tests "$INITIAL_DIR" || run_tests "$GIT_REPO_DIR"
+else
+    run_tests "$INITIAL_DIR"
 fi
