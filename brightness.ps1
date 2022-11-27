@@ -21,7 +21,7 @@ if ($arg -eq "light") {
 } else {
 	# we are in light mode, set dark
 	& ddccli -b 0 -c 75 -m $display_right
-	& ddccli -b 25 -c 50 -m $display_left
+	& ddccli -b 35 -c 50 -m $display_left
 }
 
 
