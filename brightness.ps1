@@ -1,3 +1,5 @@
+# This script uses https://github.com/hensm/ddccli to control screen brightness via DDC/CI
+
 $arg = $args[0]
 
 $display_right = "\\.\DISPLAY1"
