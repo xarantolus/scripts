@@ -19,7 +19,7 @@ run_tests() {
 
     # Go tests
     if [ -f "./go.mod" ]; then
-        go test "$@" -cover ./...
+        go test -cover ./...
         return 0
     fi
 
