@@ -3,8 +3,15 @@ set -euo pipefail
 
 GIT_DIFF=""
 if [[ "${1-}" == "--fail-on-change" ]]; then
-    GIT_DIFF="$(git diff .)"
+    GIT_DIFF="$(git diff .)" || exit 0
 fi
+
+# if there's a defined "fmt" makefile target, use that
+if grep "^fmt:" Makefile > /dev/null 2>&1; then
+    make fmt
+    exit 0
+fi
+
 
 GO_FILES=$(rg --files -g '!vendor/*' -g "*.go" || true)
 
@@ -32,6 +39,13 @@ if [ -f "./pubspec.yaml" ]; then
     echo "Formatting Flutter project..."
     flutter format --line-length 120 --fix "." || true
 fi
+
+# If we find CMakelists or similar, use clang-format on all c, c++ etc. files recursively
+if [ -f "./CMakeLists.txt" ] || [ -f "../CMakeLists.txt" ]; then
+    echo "Formatting CMake project..."
+    find . -print0 -type f -name "*.h" -o -name "*.c" -o -name "*.cpp" -o -name "*.hpp" -o -name "*.cc" -o -name "*.hh" -o -name "*.cxx" -o -name "*.hxx" | xargs clang-format -i
+fi
+
 
 # Now if we have a diff saved, we check if formatting changed anything
 if [ "$GIT_DIFF" != "" ]; then

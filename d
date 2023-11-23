@@ -37,6 +37,9 @@ elif [ -f "package.json" ]; then
 	elif grep "\"start\":" package.json > /dev/null 2>&1; then
 		npm run start
 		exit 0
+	elif grep "\"dev\":" package.json > /dev/null 2>&1; then
+		npm run dev
+		exit 0
 	fi
 	echo "No deploy script found"
 	exit 2
