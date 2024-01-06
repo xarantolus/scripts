@@ -1,0 +1,22 @@
+FROM arm64v8/ubuntu
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
+	# All typical command line utilities we could use
+    curl git sudo wget nano \
+	# For building
+	build-essential cmake doctest doctest-dev gdb ninja-build \
+	lsb-release software-properties-common gnupg \
+	libboost-all-dev libroaring-dev libssl-dev libcurl4-openssl-dev zlib1g-dev
+
+RUN useradd -m -s /bin/bash user && echo "user:user" | chpasswd && adduser user sudo
+RUN echo "user ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+
+
+# Set hostname to "armshell"
+RUN echo "armshell" > /etc/hostname
+
+USER user
+ENV PS1="\[\e[0;32m\]\u@armshell$ "
+ENV TERM=xterm-256color
+WORKDIR /project

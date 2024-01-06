@@ -1,0 +1,29 @@
+#!/bin/bash
+set -eou
+
+if [ "${1:-}" == "install" ]; then
+	echo "Installing..."
+	sudo apt-get install -y qemu binfmt-support qemu-user-static
+	docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+
+	DOCKERFILE=$(dirname "$0")/resources/Dockerfile.armshell
+	if [ ! -f "$DOCKERFILE" ]; then
+		echo "Could not find Dockerfile.armshell"
+		exit 1
+	fi
+	sudo docker build -t armshell -f "$DOCKERFILE" "$(dirname "$DOCKERFILE")"
+
+	echo "Done"
+elif [ "${1:-}" == "help" ]; then
+	echo "Usage: arm [command]"
+	echo "Commands:"
+	echo "  install   Install armshell"
+	echo "  help      Show this help"
+	echo "  [command] Run a command in an arm64 container"
+	echo "            Commands:"
+	echo "              <cmd>  Run <cmd> in an arm64 container"
+	echo "            Any other arguments will be passed through to the container"
+else
+	docker run --rm --platform linux/arm64 -v"$(pwd):/project" -it armshell "//bin/bash"
+fi
+
