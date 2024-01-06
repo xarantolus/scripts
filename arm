@@ -11,7 +11,7 @@ if [ "${1:-}" == "install" ]; then
 		echo "Could not find Dockerfile.armshell"
 		exit 1
 	fi
-	sudo docker build -t armshell -f "$DOCKERFILE" "$(dirname "$DOCKERFILE")"
+	sudo docker build -t armshell -f "$DOCKERFILE" --build-arg="USER=$USER" "$(dirname "$DOCKERFILE")"
 
 	echo "Done"
 elif [ "${1:-}" == "help" ]; then
@@ -24,6 +24,11 @@ elif [ "${1:-}" == "help" ]; then
 	echo "              <cmd>  Run <cmd> in an arm64 container"
 	echo "            Any other arguments will be passed through to the container"
 else
-	docker run --rm --platform linux/arm64 -v"$(pwd):/project" -it armshell "//bin/bash"
+	docker run --rm --platform linux/arm64 \
+		--hostname "$(hostname)-ARM64" \
+		--user "$(id -u):$(id -g)" \
+		-v"$(pwd):/project" \
+		--workdir /project \
+		-it armshell "//bin/bash"
 fi
 
