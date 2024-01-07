@@ -17,6 +17,10 @@ elif [ -f "./Makefile" ]; then
 	make "$@"
 elif [ -f "./build.sh" ]; then
 	./build.sh "$@"
+elif [ -f "./Dockerfile" ]; then
+	docker build -t test .
+elif [ -f "./docker-compose.yml" ]; then
+	docker compose build
 elif [ -f "./pubspec.yaml" ]; then
 	flutter run --release "$@"
 elif [ -f "./dune-project" ]; then
