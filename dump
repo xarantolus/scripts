@@ -4,16 +4,35 @@ INPUT_TEXT="$@"
 
 if [[ -z "$INPUT_TEXT" ]]; then
     # Check if there's only one executable
-    if [[ -z "$INPUT_TEXT" ]]; then
-        INPUT_TEXT=$(find . -maxdepth 5 -executable -type f -printf "%f\n")
-        if [[ $(echo "$INPUT_TEXT" | wc -l) -ne 1 ]]; then
-            echo "No input given and couldn't find a single executable in the current directory."
-            exit 1
-        fi
+    INPUT_TEXT=$(find . -maxdepth 5 -executable -type f -printf "%f\n")
+    if [[ $(echo "$INPUT_TEXT" | wc -l) -ne 1 ]]; then
+        echo "No input given and couldn't find a single executable in the current directory."
+        exit 1
     fi
 fi
+# Split the input text into an array
+INPUT_ARRAY=($INPUT_TEXT)
 
-INPUT_TEXT="-Mintel $INPUT_TEXT"
+# Iterate over the array
+for ITEM in "${INPUT_ARRAY[@]}"; do
+    # Check if the item is a file
+    if [[ -f "$ITEM" ]]; then
+        # Determine if the binary is ARM or x86
+        BINARY_TYPE=$(file "$ITEM" | grep -oP '(\bARM\b|\bx86\b)')
+
+        if [[ "$BINARY_TYPE" == "ARM" ]]; then
+            INPUT_TEXT="$ITEM"
+        elif [[ "$BINARY_TYPE" == "x86" ]]; then
+            INPUT_TEXT="-Mintel $ITEM"
+        else
+            echo "Unsupported binary type."
+            exit 1
+        fi
+
+        # Break the loop after the first file is found
+        break
+    fi
+done
 
 if [[ ! "$INPUT_TEXT" =~ "-d" ]]; then
     if [[ ! "$INPUT_TEXT" =~ "-D" ]]; then
@@ -21,7 +40,6 @@ if [[ ! "$INPUT_TEXT" =~ "-d" ]]; then
         INPUT_TEXT="-d $INPUT_TEXT"
     fi
 fi
-
 
 # Escape for `less` prompt (it usually wouldn't display dots)
 INPUT_ESCAPED="${INPUT_TEXT//./\\.}"
