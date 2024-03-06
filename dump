@@ -18,7 +18,7 @@ for ITEM in "${INPUT_ARRAY[@]}"; do
     # Check if the item is a file
     if [[ -f "$ITEM" ]]; then
         # Determine if the binary is ARM or x86
-        BINARY_TYPE=$(file "$ITEM" | grep -oP '(\bARM\b|\bx86\b)')
+        BINARY_TYPE=$(file "$ITEM" | grep -oP '(\bARM\b|\bx86\b)' | head -n1)
 
         if [[ "$BINARY_TYPE" == "ARM" ]]; then
             INPUT_TEXT="$ITEM"
