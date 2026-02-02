@@ -40,10 +40,15 @@ if [ -f "./pubspec.yaml" ]; then
     flutter format --line-length 120 --fix "." || true
 fi
 
+if [ -f "pyproject.toml" ]; then
+    uvx ruff check . --fix || true
+    uvx ruff format . || true
+fi
+
 # If we find CMakelists or similar, use clang-format on all c, c++ etc. files recursively
 if [ -f "./CMakeLists.txt" ] || [ -f "../CMakeLists.txt" ]; then
     echo "Formatting CMake project..."
-    find . -print0 -type f -name "*.h" -o -name "*.c" -o -name "*.cpp" -o -name "*.hpp" -o -name "*.cc" -o -name "*.hh" -o -name "*.cxx" -o -name "*.hxx" | xargs clang-format -i
+    find . -print0 -type f -name "*.h" -o -name "*.c" -o -name "*.cpp" -o -name "*.hpp" -o -name "*.cc" -o -name "*.hh" -o -name "*.cxx" -o -name "*.hxx" | xargs -0 clang-format -i
 fi
 
 

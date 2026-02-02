@@ -13,6 +13,8 @@ elif [ -f "./deploy.sh" ]; then
 	./deploy.sh "$@"
 elif [ -f "./deploy/deploy.sh" ]; then
 	./deploy/deploy.sh "$@"
+elif [ -f "./scripts/deploy.sh" ]; then
+	./scripts/deploy.sh "$@"
 elif [ -f "./Makefile" ]; then
 	make "$@"
 elif [ -f "./build.sh" ]; then
